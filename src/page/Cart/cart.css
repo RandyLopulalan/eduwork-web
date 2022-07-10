@@ -1,0 +1,10 @@
+.cart{
+   margin: 1px;
+   
+}
+
+.cart-list{
+    border: 1px solid;
+    display: grid;
+    grid-template-columns: 1fr 6fr 6fr;
+}
