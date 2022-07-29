@@ -1,9 +1,11 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import cartService from "./cartService";
 
+//Get cart from localStorage
+const cart = JSON.parse(localStorage.getItem("cart"));
+
 const initialState = {
-  cart: [],
-  count: 0,
+  cart: cart ? cart : [],
   isSuccess: false,
   isError: false,
   isLoading: false,
@@ -15,7 +17,8 @@ export const getCart = createAsyncThunk(
   "cart/get",
   async (_, thunkAPI) => {
     try {
-      return await cartService.getCart();
+      const token = thunkAPI.getState().auth.user.token;
+      return await cartService.getCart(token);
     } catch (error) {
       const message =
         (error.response &&
@@ -31,9 +34,10 @@ export const getCart = createAsyncThunk(
 // PUT cart
 export const updateCart = createAsyncThunk(
   "cart/update",
-  async (dataProduct, thunkAPI) => {
+  async (newCart, thunkAPI) => {
     try {
-      return await cartService.updateCart(dataProduct);
+      const token = thunkAPI.getState().auth.user.token;
+      return await cartService.updateCart(newCart, token);
     } catch (error) {
       const message =
         (error.response &&
@@ -75,8 +79,8 @@ export const cartSlice = createSlice({
       .addCase(updateCart.fulfilled, (state, actions) => {
         state.isLoading = false;
         state.isSuccess = true;
-        state.cart = state.cart.map((products) => products._id === actions.payload.id ? {...actions.payload} : products)
-      })
+        state.cart = state.cart.filter((list) => list._id !== actions.payload.id)
+      })  
       .addCase(updateCart.rejected, (state, actions) => {
         state.isLoading = false;
         state.isError = true;

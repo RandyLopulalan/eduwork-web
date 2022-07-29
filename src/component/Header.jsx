@@ -1,11 +1,11 @@
-import { FaCartPlus, FaSignInAlt, FaUser } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { FaCartPlus, FaSignInAlt, FaUser } from "react-icons/fa";
 
-function Header() {
+function Header({ count }) {
   const { user } = useSelector((state) => state.auth);
-  const {count} = useSelector(state => state.cart)
-
+  const { cart } = useSelector((state) => state.cart);
+  
   return (
     <header className="header">
       <div className="logo">
@@ -14,8 +14,8 @@ function Header() {
       <ul>
         {user ? (
           <>
+            {cart.length ? cart.length : count === 0 ? "" : count}
             <li>
-              {count === 0 ? "" : count}
               <Link to="/cart">
                 <FaCartPlus /> Cart
               </Link>

@@ -6,6 +6,7 @@ const user = JSON.parse(localStorage.getItem("user"));
 
 const initialState = {
   user: user ? user : null,
+  profile: [],
   isError: false,
   isSuccess: false,
   isLoading: false,
@@ -31,29 +32,45 @@ export const register = createAsyncThunk(
 );
 
 // Login user
-export const login = createAsyncThunk(
-  "auth/login",
-  async (user, thunkAPI) => {
-    try {
-      return await authService.login(user);
-    } catch (error) {
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString();
-      return thunkAPI.rejectWithValue(message);
-    }
+export const login = createAsyncThunk("auth/login", async (user, thunkAPI) => {
+  try {
+    return await authService.login(user);
+  } catch (error) {
+    const message =
+      (error.response && error.response.data && error.response.data.message) ||
+      error.message ||
+      error.toString();
+    return thunkAPI.rejectWithValue(message);
   }
-);
+});
 
-export const logout = createAsyncThunk(
-  "auth/loguot", 
-  async () => {
-    await authService.logout();
+// Logout user
+export const logout = createAsyncThunk("auth/loguot", async (_, thunkAPI) => {
+  try {
+    const token = thunkAPI.getState().auth.user.token;
+    return await authService.logout(token);
+  } catch (error) {
+    const message =
+      (error.response && error.response.data && error.response.data.message) ||
+      error.message ||
+      error.toString();
+    return thunkAPI.rejectWithValue(message);
   }
-);
+});
+
+// User info
+export const me = createAsyncThunk("auth/profile", async (_, thunkAPI) => {
+  try {
+    const token = thunkAPI.getState().auth.user.token;
+    return await authService.me(token);
+  } catch (error) {
+    const message =
+      (error.response && error.response.data && error.response.data.message) ||
+      error.message ||
+      error.toString();
+    return thunkAPI.rejectWithValue(message);
+  }
+});
 
 export const authSlice = createSlice({
   name: "auth",
@@ -96,9 +113,23 @@ export const authSlice = createSlice({
         state.message = actions.payload;
         state.user = null;
       })
-      .addCase(logout.fulfilled, (state) => {
-        state.user = null
+      .addCase(me.pending, (state) => {
+        state.isLoading = true;
       })
+      .addCase(me.fulfilled, (state, actions) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.profile = [actions.payload];
+      })
+      .addCase(me.rejected, (state, actions) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = actions.payload;
+        state.profile = null;
+      })
+      .addCase(logout.fulfilled, (state) => {
+        state.user = null;
+      });
   },
 });
 

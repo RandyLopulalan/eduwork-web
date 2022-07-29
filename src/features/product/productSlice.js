@@ -12,9 +12,9 @@ const initialState = {
 // GET product
 export const getProduct = createAsyncThunk(
   "product/getProduct",
-  async (_, thunkAPI) => {
+  async (data, thunkAPI) => {
     try {
-      return await productService.getProduct();
+      return await productService.getProduct(data);
     } catch (error) {
       const message =
         (error.response &&

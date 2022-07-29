@@ -24,14 +24,42 @@ const login = async (userData) => {
     return response.data
 }
 
-const logout = () => {
-    localStorage.removeItem('user')
+// Logout user
+const logout = async(token) => {
+    const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+    
+    const response = await axios.post(API_URL + 'logout', config)
+
+    if(response.data){
+        localStorage.removeItem('user')
+    }
+
+    return response.data
+
+}
+
+// Profile user
+const me = async (token) => {
+    const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
+    const response = await axios.get(API_URL + 'me', config)
+
+    return response.data
 }
 
 const authService = {
     register,
     logout,
-    login
+    login,
+    me
 }
 
 export default authService

@@ -1,60 +1,39 @@
 import { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { register, reset } from "../../features/auth/authSlice";
 import { useNavigate } from "react-router-dom";
 import { FaUser } from "react-icons/fa";
-import { register, reset } from "../../features/auth/authSlice";
 import Spinner from "../../component/Spinner";
 
 function Register() {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    password: "",
-  });
-
-  const { name, email, password } = formData;
-
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
+  const [formData, setFormData] = useState({name: "", email: "", password: ""});
+  const { name, email, password } = formData;
   const { user, isLoading, isError, isSuccess, message } = useSelector(
     (state) => state.auth
   );
 
-  useEffect(() => {
-    if (isError) {
-      console.error(message);
-    }
-
-    if (isSuccess || user) {
-      navigate("/");
-    }
-
-    dispatch(reset());
-  }, [user, isError, isSuccess, message, navigate, dispatch]);
-
+  // ================= onChange input register user ===================
   const onChange = (e) => {
-    setFormData((prev) => ({
-      ...prev,
-      [e.target.name]: e.target.value,
-    }));
+    setFormData((prev) => ({...prev, [e.target.name]: e.target.value,}))
   };
 
+  // ================= onSubmit form register user ===================
   const onSubmit = (e) => {
     e.preventDefault();
-
-    const userData = {
-      name,
-      email,
-      password,
-    };
-
+    const userData = { name, email, password};
     dispatch(register(userData));
   };
 
-  if(isLoading){
-    return <Spinner />
-  }
+  // ========================== useEffect ============================
+  useEffect(() => {
+    if (isError) console.error(message);   
+    if (isSuccess || user) navigate("/");
+    dispatch(reset());
+  }, [user, isError, isSuccess, message, navigate, dispatch]);
+
+  if(isLoading) return <Spinner />
 
   return (
     <>

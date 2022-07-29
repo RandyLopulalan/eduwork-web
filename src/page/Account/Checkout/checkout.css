@@ -1,0 +1,61 @@
+/*================ Select address page ==================*/
+.delivery-address{
+    border: 1px solid;
+    border-radius: .5rem;
+    height: 50vh;
+}
+.delivery-address-header{
+    display: flex;
+    justify-content: space-between;
+    margin: 1rem 2rem 1rem 2rem;
+    padding: 0 7rem 0 1rem;
+    border-bottom: 1px solid;
+}
+
+.delivery-address-list{
+    display: grid;
+    align-items: center;
+    grid-template-columns: 2fr 1fr;
+    padding: 1rem;
+    margin: .5rem;
+    border: 1px solid;
+    border-radius: .5rem;
+}
+
+.delivery-address-data{
+    display: flex;
+    gap: .5rem;
+}
+
+.checked{
+    background-color: lightgreen;
+}
+
+/*======================= Invoice Page ==================*/
+.invoice {
+  border: 1px solid;
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+  height: 50vh;
+}
+.invoice-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  padding: 0.5rem;
+}
+
+.invoice-list-data {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
+  border-bottom: 1px solid;
+  padding: 1rem;
+}
+
+.invoice-btn{
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin: 1rem;
+}

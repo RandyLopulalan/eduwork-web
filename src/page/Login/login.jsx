@@ -1,58 +1,40 @@
 import { useEffect, useState } from "react";
-import { FaSignInAlt } from "react-icons/fa";
 import { useSelector, useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import { login, reset } from "../../features/auth/authSlice";
+import { FaSignInAlt } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 import Spinner from "../../component/Spinner";
 
 function Login() {
-  const [formData, setFormData] = useState({
-    email: "",
-    password: "",
-  });
-
+  const [formData, setFormData] = useState({ email: "", password: ""});
   const { email, password } = formData;
-
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
   const { user, isLoading, isError, isSuccess, message } = useSelector(
     (state) => state.auth
   );
-
-  useEffect(() => {
-    if (isError) {
-      console.error(message);
-    }
-
-    if (isSuccess || user) {
-      navigate("/");
-    }
-
-    dispatch(reset());
-  }, [user, isError, isSuccess, message, navigate, dispatch]);
-
+  
+  // ================= onChange input login user ===================
   const onChange = (e) => {
-    setFormData((prev) => ({
-      ...prev,
-      [e.target.name]: e.target.value,
-    }));
+    setFormData((prev) => ({...prev, [e.target.name]: e.target.value,}));
   };
 
+  // ================= onSubmit form login user ===================
   const onSubmit = (e) => {
     e.preventDefault();
-
-    const userData = {
-      email, password
-    }
-
+    const userData = { email, password}
     dispatch(login(userData))
   };
 
-  if(isLoading){
-    return <Spinner />
-  }
+  // ====================== useEffect ========================
+  useEffect(() => {
+    if (isError) console.error(message);
+    if (isSuccess || user) navigate("/");
+    dispatch(reset());
+  }, [user, isError, isSuccess, message, navigate, dispatch]);
 
+  if(isLoading) return <Spinner />
+  
   return (
     <>
       <section className="heading">
