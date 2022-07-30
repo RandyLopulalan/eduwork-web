@@ -51,6 +51,11 @@
   text-align: center;
   border-bottom: 1px solid;
   padding: 1rem;
+  gap: 1rem;
+}
+
+.invoice-list-data span{
+  width: 30%;
 }
 
 .invoice-btn{

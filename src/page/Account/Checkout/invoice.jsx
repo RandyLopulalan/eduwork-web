@@ -30,7 +30,7 @@ const Invoice = () => {
                 </article >
                 <article className="invoice-list-data">
                   <p>Total Amount</p>
-                  <p>{data.total}</p>
+                  <p>{`Rp.${data.total}`}</p>
                 </article>
                 <article className="invoice-list-data">
                   <p>Billed to</p>

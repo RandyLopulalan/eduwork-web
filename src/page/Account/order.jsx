@@ -47,7 +47,7 @@ const Order = () => {
               className="order-list-item"
             >
               <p>{data.name}</p>
-              <p>{data.price}</p>
+              <p>Rp.{data.price}</p>
               <p>{data.qty}</p>
             </article>
           );

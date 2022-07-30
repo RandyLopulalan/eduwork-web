@@ -30,30 +30,32 @@ const Konfirmasi = ({ setListSelect, addressSelect, setCount }) => {
   return (
     <div>
       Konfirmasi
-      <section className="konfirmasi">
+      <section className="invoice">
         <section className="invoice-list">
+          
           <article className="invoice-list-data">
             <p>Alamat</p>
-            {[findAddress].map((data) => (
-              <p
-                key={data._id}
-              >{`${data.alamat}, ${data.kelurahan}, ${data.kecamatan}, ${data.kabupaten}, ${data.provinsi}, ${data.detail}`}</p>
-            ))}
+            {[findAddress].map(
+              (data) =>
+              <span key={data._id}>
+                {`${data.alamat}, ${data.kelurahan}, ${data.kecamatan}, ${data.kabupaten}, ${data.provinsi}, ${data.detail}`}
+              </span>
+            )}
           </article>
 
           <article className="invoice-list-data">
             <p>Sub total</p>
-            {total}
+            {`Rp.${total}`}
           </article>
 
           <article className="invoice-list-data">
             <p>Ongkir</p>
-            {order.delivery_fee}
+            {`Rp.${order.delivery_fee}`}
           </article>
 
           <article className="invoice-list-data">
             <h3>Total</h3>
-            <h3>{order.delivery_fee + total}</h3>
+            <h3>{`Rp.${order.delivery_fee + total}`}</h3>
           </article>
         </section>
       </section>
